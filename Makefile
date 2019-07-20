@@ -82,7 +82,7 @@ uboot_s := $(uboot_s_wrkdir)/u-boot.bin
 
 opensbi_srcdir := $(srcdir)/opensbi
 opensbi_wrkdir := $(wrkdir)/opensbi
-opensbi := $(opensbi_wrkdir)/platform/sifive/fu540/firmware/fw_payload.bin
+opensbi := $(opensbi_wrkdir)/platform/sifive/fu540/firmware/fw_jump.bin
 
 openocd_srcdir := $(srcdir)/riscv-openocd
 openocd_wrkdir := $(wrkdir)/riscv-openocd
@@ -376,6 +376,10 @@ test: $(test_export)
 	# this does way more than it needs to right now
 	cp -v $(test_export)/uEnv-net.txt $(tftp)/uEnv.txt
 	cp -v $(test_export)/hifiveu.fit $(tftp)/
+	cp -v $(test_export)/fw_jump.bin $(tftp)/
+	cp -v $(test_export)/vmlinux.bin $(tftp)/
+	cp -v $(test_export)/hifive-unleashed-a00.dtb $(tftp)/
+	cp -v $(test_export)/initramfs.cpio.gz $(tftp)/
 	test/jtag-boot.sh $(test_export)/u-boot.bin
 
 .PHONY: test_s

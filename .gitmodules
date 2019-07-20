@@ -28,7 +28,7 @@
 	url = https://github.com/sifive/riscv-openocd
 [submodule "opensbi"]
 	path = opensbi
-	url = https://github.com/riscv/opensbi
+	url = https://github.com/sifive/opensbi
 [submodule "u-boot-m"]
 	path = u-boot-m
 	url = git://github.com/sifive/u-boot
