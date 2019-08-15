@@ -287,10 +287,9 @@ $(uboot): $(uboot_srcdir) $(target_gcc)
 	rm -rf $(uboot_wrkdir)
 	mkdir -p $(uboot_wrkdir)
 	mkdir -p $(dir $@)
-	cp $(confdir)/uboot-fsbl-citest_defconfig $(uboot_wrkdir)/.config
-	$(MAKE) -C $(uboot_srcdir) O=$(uboot_wrkdir) olddefconfig
-	#$(MAKE) -C $(uboot_srcdir) O=$(uboot_wrkdir) sifive_fu540_fsbl_defconfig
-	#echo 'CONFIG_BOOTCOMMAND="dhcp; env import -t \${fileaddr} \${filesize}; run boot2"' >> $(uboot_wrkdir)/.config
+	#cp $(confdir)/uboot-fsbl-citest_defconfig $(uboot_wrkdir)/.config
+	#$(MAKE) -C $(uboot_srcdir) O=$(uboot_wrkdir) olddefconfig
+	$(MAKE) -C $(uboot_srcdir) O=$(uboot_wrkdir) sifive_fu540_fsbl_defconfig
 	$(MAKE) -C $(uboot_srcdir) O=$(uboot_wrkdir) CROSS_COMPILE=$(CROSS_COMPILE)
 
 $(openocd): $(openocd_srcdir)
@@ -370,6 +369,26 @@ qemu-ltp: $(qemu) $(bbl) $(vmlinux) $(initramfs) $(rootfs)
 .PHONY: uboot
 uboot: $(uboot) $(uboot_s)
 
+#hardcoded path hacks here
+work/oe/build:
+	mkdir -p work/oe
+	cd work/oe && ln -s ../../oe/* . && . meta-sifive-dev/setup.sh
+
+$(wrkdir)/oe/build/demo-testing-freedom-u540.wic.gz: $(wrkdir)/oe/build
+	# rather ugly wrapper for openembedded
+	cd work/oe/ && . openembedded-core/oe-init-build-env && \
+		bitbake demo-testing
+
+.PHONY: sdk oe-sdk
+oe-sdk sdk: oe
+	cd work/oe/ && . openembedded-core/oe-init-build-env && \
+		bitbake demo-testing -c populate_sdk
+
+.PHONY: oe
+oe: $(wrkdir)/oe/build/demo-testing-freedom-u540.wic.gz
+
+oe_export: $(wrkdir)/oe/build/demo-testing-freedom-u540.wic.gz
+	cp -v $@ $(test_export)/
 
 .PHONY: test
 test: $(test_export)
