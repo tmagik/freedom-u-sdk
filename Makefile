@@ -394,16 +394,21 @@ test_s: $(test_export)
 .PHONY: test_export
 test_export: $(test_export_tar)
 
-$(test_export): $(fit) $(uboot) $(uboot_s) $(opensbi) $(uImage) $(initramfs)
+$(test_export): $(fit) $(uboot) $(uboot_s) $(opensbi) $(uImage) $(initramfs) Makefile
 	rm -rf $(test_export)
 	mkdir $(test_export)
 	cp -v $(confdir)/uEnv-net.txt $(test_export)/
 	cp -v $(fit) $(test_export)/hifiveu.fit
 	cp -v $(confdir)/uEnv-osbi.txt $(test_export)/
 	cp -v $(confdir)/uEnv-smode.txt $(test_export)/
+	cp -v $(vmlinux_bin) $(test_export)/
 	cp -v $(uImage) $(test_export)/
 	cp -v $(uboot) $(test_export)/
+	cp -v $(uboot_s) $(test_export)/u-boot_s.bin
 	cp -v $(opensbi) $(test_export)/
+	cp -v $(opensbi_wrkdir)/platform/sifive/fu540/firmware/fw_payload.bin $(test_export)/
+	cp -v $(uboot_wrkdir)/arch/riscv/dts/hifive-unleashed-a00.dtb $(test_export)/
+	cp -v $(initramfs) $(test_export)/
 
 $(test_export_tar): $(test_export)
 	tar zcvf $(test_export_tar) -C $(wrkdir) `basename $(test_export)`

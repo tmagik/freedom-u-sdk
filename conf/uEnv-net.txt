@@ -29,7 +29,7 @@ irdfile=initramfs.cpio.gz
 sbiaddr=80000000
 fdtaddr=88000000
 vmladdr=80200000
-irdaddr=82000000
+irdaddr=90000000
 # oh the hack.. use a large size.. ugh
 irdsize=01000000
 vmlsize=00800000
