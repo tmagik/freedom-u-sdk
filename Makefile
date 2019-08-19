@@ -287,9 +287,9 @@ $(uboot): $(uboot_srcdir) $(target_gcc)
 	rm -rf $(uboot_wrkdir)
 	mkdir -p $(uboot_wrkdir)
 	mkdir -p $(dir $@)
-	#cp $(confdir)/uboot-fsbl-citest_defconfig $(uboot_wrkdir)/.config
-	#$(MAKE) -C $(uboot_srcdir) O=$(uboot_wrkdir) olddefconfig
-	$(MAKE) -C $(uboot_srcdir) O=$(uboot_wrkdir) sifive_fu540_fsbl_defconfig
+	cp $(confdir)/uboot-fsbl-citest_defconfig $(uboot_wrkdir)/.config
+	$(MAKE) -C $(uboot_srcdir) O=$(uboot_wrkdir) olddefconfig
+	#$(MAKE) -C $(uboot_srcdir) O=$(uboot_wrkdir) sifive_fu540_fsbl_defconfig
 	$(MAKE) -C $(uboot_srcdir) O=$(uboot_wrkdir) CROSS_COMPILE=$(CROSS_COMPILE)
 
 $(openocd): $(openocd_srcdir)
